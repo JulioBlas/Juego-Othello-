@@ -1,12 +1,12 @@
 document.addEventListener("keydown", movimiento);
 var canvas = document.getElementById('fondo');
 var lapiz = canvas.getContext('2d');
-
 const DIMENSION = 50;
-var x = 0;
+var x = 400;
 var y = 0;
+var turno = true;
+var contador = 0;
 var matriz = new Array(8);
-var jugador = false; //true = amarillo o si es false = negro
 
 var fondo = {
     url: './Imagenes/Tablero.png',
@@ -26,114 +26,175 @@ var negra = {
     cargaOk: false
 };
 
-var tecla = {
-    LEFT: 37,
-    UP: 38,
-    RIGHT: 39,
-    DOWN: 40,
-    ENTER: 13
-}
-
-function iniciarMatriz() {
-    for (var i = 0; i < matriz.length; i++) {
-        matriz[i] = new Array(8);
-        for (var j = 0; j < matriz.length; j++) {
-            matriz[i][j] = 'x';
-        }
-    }
-}
-
-function movimiento(evento){
-    switch(evento.keyCode){
-        case tecla.LEFT:
-            if(x > 0){
-                x = x - DIMENSION;
-            }
-            
-            break;
-        case tecla.UP:
-            if (y > 0){
-                y = y - DIMENSION;
-            }
-            
-            break;
-        case tecla.RIGHT:
-             if(x < 400){
-                 x = x + DIMENSION;
-             }
-             
-             break; 
-        case tecla.DOWN:
-             if(y < 400){
-             y = y + DIMENSION;
-             }
-             
-             break;    
-        case tecla.ENTER:       
-            jugador = true;
-            if(matriz[x/DIMENSION][y/DIMENSION] == 'x' && jugador == true){
-                matriz[x/DIMENSION][y/DIMENSION] = 'a'   ;         
-            }    
-    }
- }
-
 fondo.imagen = new Image();
 fondo.imagen.src = fondo.url;
+
 amarilla.imagen = new Image();
 amarilla.imagen.src = amarilla.url;
+
 negra.imagen = new Image();
 negra.imagen.src = negra.url;
 
-
+dibujarMatriz();
+posicionFichasIniciales();
+dibujar();
+dibujarFichasdeJuego();
+    
 
 fondo.imagen.addEventListener("load", function(){
-    fondo.cargaOk = true;
-    
-});
+    fondo.cargaOk = true; 
+    dibujar();
    
+});
 
-function pintarTablero(){
+negra.imagen.addEventListener("load", function(){
+    negra.cargaOk = true;
+    dibujar();
+});
+
+amarilla.imagen.addEventListener("load",function(){
+    amarilla.cargaOk = true;
+    dibujar();
+});
+
+function movimiento(evento){
+    switch(evento.keyCode){
+        case tecla.LEFT:        
+        if(x > 0){
+            x = x - DIMENSION;         
+        }
+        dibujar();
+            break;
+
+         case tecla.UP:
+         if(y > 0){
+            y = y - DIMENSION; 
+            
+         };
+         dibujar();
+            break;
+
+         case tecla.RIGHT:
+         if(x < 350){
+            x = x + DIMENSION;
+         };
+            dibujar();
+            break; 
+           
+         case tecla.DOWN:
+         if(y < 350){
+             y = y + DIMENSION;
+             dibujar();
+         };
+             break;
+         case tecla.ENTER:
+          colorPosicion();
+          if(contador > 59){
+              alert("Empate")
+          };
+         break;
+        };
+
+    };
+ 
+
+    function colorPosicion(){
+        if(turno == true){
+            if (matriz[x / DIMENSION][y/DIMENSION] == 'x'){
+                matriz[x / DIMENSION] [y / DIMENSION] = 'n'
+                turno = false
+                dibujar();
+                x = 0;
+                y = 0;
+                dibujarFichasdeJuego();
+                dibujar();
+                contador = contador + 1;
+            }else{
+                alert("Posicion Invalida");
+            };
+            
+        }else if(turno == false){
+            if (matriz[x/DIMENSION][y/DIMENSION] == 'x'){
+                matriz[x / DIMENSION][y / DIMENSION] = 'a'
+                turno = true;
+                dibujar();
+                x = 400;
+                y = 0;
+                dibujarFichasdeJuego();
+                dibujar();
+                contador = contador + 1;
+            }else{
+                alert("Posicion Invalida");
+            };
+            
+        };
+
+    };
+
+function dibujar(){
+    
     if(fondo.cargaOk == true) {
         lapiz.drawImage(fondo.imagen, 0, 0);
+    };
+     if(negra.cargaOk == true && turno == true){
+         lapiz.drawImage(negra.imagen,x,y);
+     };
+     if(amarilla.cargaOk == true && turno == false){
+         lapiz.drawImage(amarilla.imagen, x,y);
      }
+     dibujarFichasPrincipales();
+
 };
 
-function fichasIniciales(){
-    matriz[3][3] = 'a';
-    matriz[3][4] = 'n';
-    matriz[4][4] = 'a';
-    matriz[4][3] = 'n';
+
+
+function dibujarMatriz(){
+    for  (var columna = 0; columna < matriz.length; columna++){
+        matriz[columna] = new Array(8);
+        for( var fila = 0; fila < matriz.length; fila++){
+            matriz[columna][fila] = 'x';
+        };
+    };
 };
 
-function pintarFichas(){
-    for (var i = 0; i < matriz.length; i++) {
-        for (var j = 0; j < matriz.length; j++) {
-            if (matriz[i][j] == 'a') {
-                lapiz.drawImage(amarilla.imagen, j * DIMENSION, i * DIMENSION);
-            } else if (matriz[i][j] == 'n') {
-                lapiz.drawImage(negra.imagen, j  * DIMENSION, i * DIMENSION);
-            }else {
-
-            }
-        }
-    }
+function posicionFichasIniciales(){
+    matriz[3][3] = 'n';
+    matriz[3][4] = 'a';
+    matriz[4][3] = 'a';
+    matriz[4][4] = 'n';
 };
 
-function jugando(){
-    if (jugador = false){
-        lapiz.drawImage(amarilla.imagen,x,y )
-        jugador = true
-    }else{
-        lapiz.drawImage(negra.imagen,x,y)
-        jugador = false
-    }
-}
+ function dibujarFichasPrincipales(){
+    for (var columna = 0; columna < matriz.length; columna++){
+        for (var fila = 0; fila < matriz.length; fila ++){
+            if(matriz[columna][fila] == 'n'){
+                lapiz.drawImage(negra.imagen, columna * DIMENSION, fila * DIMENSION)
+            };
+            if(matriz[columna][fila] == 'a'){
+                lapiz.drawImage(amarilla.imagen, columna * DIMENSION, fila * DIMENSION)
+            };
+        };
+    };
+ };
 
-
-addEventListener("load", function(){
-    pintarTablero();
+ function dibujarFichasdeJuego(){
      
-    jugando();
-    iniciarMatriz();
-    fichasIniciales();
-})
+     if(turno == true ){
+        lapiz.drawImage(negra.imagen, x * DIMENSION, y * DIMENSION);
+        x = 400;
+        y= 0;
+     }
+    else if( turno == false ) {
+        lapiz.drawImage(amarilla.imagen, x * DIMENSION, y * DIMENSION);
+        x = 400;
+        y= 0;
+    };
+ };
+
+    var tecla = {
+        LEFT: 37,
+        UP: 38,
+        RIGHT: 39,
+        DOWN: 40,
+        ENTER: 13
+    };
