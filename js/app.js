@@ -87,8 +87,10 @@ function movimiento(evento){
              dibujar();
          };
              break;
+
          case tecla.ENTER:
           colorPosicion();
+          cambiandoColores();
           if(contador > 59){
               alert("Empate")
           };
@@ -198,3 +200,23 @@ function posicionFichasIniciales(){
         DOWN: 40,
         ENTER: 13
     };
+
+function cambiandoColores(){
+   if(matriz[3][3] == 'n' && matriz[3][5] == 'n' || matriz[4][4] == 'n' && matriz[2][4] == 'n' ){
+    matriz[3][4] = 'n'
+   }
+
+   if(matriz[4][4] == 'n' && matriz[4][2] == 'n' || matriz[3][3] == 'n' && matriz[5][3] == 'n'){
+    matriz[4][3] = 'n'
+   }
+
+   if(matriz[3][4] == 'a' && matriz[3][2] == 'a' || matriz[4][3] == 'a' && matriz[2][3] == 'a'){
+       matriz[3][3] = 'a'
+   }
+   
+   if(matriz[4][3] == 'a' && matriz[4][5] == 'a' || matriz[3][4] == 'a' && matriz[5][4] == 'a'){
+        matriz[4][4] = 'a'
+   }
+ 
+dibujarFichasPrincipales();
+ };
