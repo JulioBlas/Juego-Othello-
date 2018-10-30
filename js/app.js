@@ -50,6 +50,7 @@ fondo.imagen.addEventListener("load", function(){
 negra.imagen.addEventListener("load", function(){
     negra.cargaOk = true;
     dibujar();
+<<<<<<< HEAD
 });
 
 amarilla.imagen.addEventListener("load",function(){
@@ -57,6 +58,15 @@ amarilla.imagen.addEventListener("load",function(){
     dibujar();
 });
 
+=======
+});
+
+amarilla.imagen.addEventListener("load",function(){
+    amarilla.cargaOk = true;
+    dibujar();
+});
+
+>>>>>>> 1248e7811e95c95d4fa6084667efea032bbe0c09
 function movimiento(evento){
     switch(evento.keyCode){
         case tecla.LEFT:        
@@ -219,5 +229,9 @@ function cambiandoColores(){
    }
  
 dibujarFichasPrincipales();
+<<<<<<< HEAD
  };
 
+=======
+ };
+>>>>>>> 1248e7811e95c95d4fa6084667efea032bbe0c09
