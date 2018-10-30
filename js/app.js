@@ -50,12 +50,22 @@ fondo.imagen.addEventListener("load", function(){
 negra.imagen.addEventListener("load", function(){
     negra.cargaOk = true;
     dibujar();
+
 });
 
 amarilla.imagen.addEventListener("load",function(){
     amarilla.cargaOk = true;
     dibujar();
 });
+
+
+
+
+amarilla.imagen.addEventListener("load",function(){
+    amarilla.cargaOk = true;
+    dibujar();
+});
+
 
 function movimiento(evento){
     switch(evento.keyCode){
@@ -219,4 +229,4 @@ function cambiandoColores(){
    }
  
 dibujarFichasPrincipales();
- };
+}
